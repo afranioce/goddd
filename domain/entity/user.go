@@ -61,8 +61,8 @@ func (d *userDomain) Password() string {
 	return d.value.(*User).Password
 }
 
-func (d *userDomain) LastLogin() time.Time {
-	return *d.value.(*User).LastLogin
+func (d *userDomain) LastLogin() *time.Time {
+	return d.value.(*User).LastLogin
 }
 
 func (d *userDomain) UpdateLastLogin() {

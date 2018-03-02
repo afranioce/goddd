@@ -13,7 +13,7 @@ func TestTaxonomyVocabularyEmptyInvalid(t *testing.T) {
 	assert.NotNil(t, dom)
 }
 
-func TestTaxonomyVocabularyEmpty(t *testing.T) {
+func TestTaxonomyVocabularyValid(t *testing.T) {
 	user := NewUser("teste", "email@email.com", "123456")
 	dom := NewTaxonomyVocabulary("teste", "descricao", user)
 
@@ -38,7 +38,7 @@ func BenchmarkTaxonomyVocabulary(b *testing.B) {
 		dom.Status()
 		dom.Author()
 		dom.Editor()
-		//Em questao de performance, fica muito mais rapido converter para dominio seo tipo
+		//Para converter uma entidade para um domínio fica mais rápido fazer o "type assertion" para a entidade. Pq? n sei hsausasau
 		e := dom.ToEntity().(*TaxonomyVocabulary)
 		e.ToDomain()
 	}
