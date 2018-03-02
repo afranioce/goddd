@@ -1,12 +1,21 @@
 package entity
 
 import (
+	"database/sql"
+
 	"github.com/jinzhu/gorm"
 	"gopkg.in/go-playground/validator.v8"
 )
 
 type entityBase struct {
 	gorm.Model
+}
+
+type entityBlamed struct {
+	CreatedBy   User `gorm:"save_associations:false"`
+	CreatedByID uint `gorm:"not null"`
+	ChangedBy   User `gorm:"save_associations:false"`
+	ChangedByID sql.NullInt64
 }
 
 type domainBase struct {

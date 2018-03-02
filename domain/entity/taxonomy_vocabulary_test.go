@@ -26,6 +26,7 @@ func TestTaxonomyVocabularyEmpty(t *testing.T) {
 	assert.IsType(t, dom.ToEntity().ToDomain(), &taxonomyVocabularyDomain{})
 
 	assert.IsType(t, dom.Author(), &userDomain{})
+	assert.IsType(t, dom.Editor(), &userDomain{})
 }
 
 func BenchmarkTaxonomyVocabulary(b *testing.B) {
@@ -37,6 +38,7 @@ func BenchmarkTaxonomyVocabulary(b *testing.B) {
 		dom.Description()
 		dom.Status()
 		dom.Author()
+		dom.Editor()
 		//Em questao de performance, fica muito mais rapido converter para dominio seo tipo
 		e := dom.ToEntity().(*TaxonomyVocabulary)
 		e.ToDomain()

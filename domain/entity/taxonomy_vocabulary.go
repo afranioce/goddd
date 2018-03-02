@@ -6,12 +6,9 @@ import (
 
 type TaxonomyVocabulary struct {
 	entityBase
+	entityBlamed
 	Name        string `gorm:"type:varchar(50);not null" sql:"index"`
 	Description string `gorm:"type:varchar(1000);not null"`
-	CreatedBy   User   `gorm:"save_associations:false"`
-	CreatedByID uint   `gorm:"not null"`
-	ChangedBy   User   `gorm:"save_associations:false"`
-	ChangedByID uint
 	Status      domain.Status
 }
 
@@ -27,15 +24,17 @@ type taxonomyVocabularyDomain struct {
 	*domainBase
 }
 
-func NewTaxonomyVocabulary(nome string, descricao string, author *userDomain) *taxonomyVocabularyDomain {
+func NewTaxonomyVocabulary(name string, description string, author *userDomain) *taxonomyVocabularyDomain {
 	return &taxonomyVocabularyDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyVocabulary{
-				Name:        nome,
-				Description: descricao,
+				Name:        name,
+				Description: description,
 				Status:      domain.StatusEnabled,
-				CreatedBy:   *author.ToEntity().(*User),
-				CreatedByID: author.Id(),
+				entityBlamed: entityBlamed{
+					CreatedBy:   *author.ToEntity().(*User),
+					CreatedByID: author.Id(),
+				},
 			},
 		},
 	}
@@ -55,6 +54,10 @@ func (d *taxonomyVocabularyDomain) Description() string {
 
 func (d *taxonomyVocabularyDomain) Author() EntityTransformer {
 	return d.value.(*TaxonomyVocabulary).CreatedBy.ToDomain()
+}
+
+func (d *taxonomyVocabularyDomain) Editor() EntityTransformer {
+	return d.value.(*TaxonomyVocabulary).ChangedBy.ToDomain()
 }
 
 func (d *taxonomyVocabularyDomain) Status() domain.Status {
