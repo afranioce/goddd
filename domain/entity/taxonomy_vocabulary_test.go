@@ -3,7 +3,6 @@ package entity
 import (
 	"testing"
 
-	"github.com/afranioce/goddd/domain"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,7 +20,7 @@ func TestTaxonomyVocabularyEmpty(t *testing.T) {
 	assert.Equal(t, dom.Id(), uint(0))
 	assert.Equal(t, dom.Name(), "teste")
 	assert.Equal(t, dom.Description(), "descricao")
-	assert.Equal(t, dom.Status(), domain.StatusEnabled)
+	assert.Equal(t, dom.Status(), StatusEnabled)
 	assert.IsType(t, dom.ToEntity(), &TaxonomyVocabulary{})
 	assert.IsType(t, dom.ToEntity().ToDomain(), &taxonomyVocabularyDomain{})
 

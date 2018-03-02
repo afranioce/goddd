@@ -7,6 +7,15 @@ import (
 	"gopkg.in/go-playground/validator.v8"
 )
 
+type Status byte
+
+const (
+	StatusExcluded Status = iota
+	StatusCanceled
+	StatusDisabled
+	StatusEnabled
+)
+
 type entityBase struct {
 	gorm.Model
 }

@@ -3,7 +3,6 @@ package entity
 import (
 	"time"
 
-	"github.com/afranioce/goddd/domain"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -15,7 +14,7 @@ type User struct {
 	ConfirmationToken   string `gorm:"type:varchar(255);"`
 	PasswordRequestedAt time.Time
 	LastLogin           *time.Time
-	Status              domain.Status
+	Status              Status
 }
 
 func (entidade *User) ToDomain() EntityTransformer {
@@ -32,7 +31,7 @@ func NewUser(username string, email string, plainPassword string) *userDomain {
 			value: &User{
 				Username: username,
 				Email:    email,
-				Status:   domain.StatusEnabled,
+				Status:   StatusEnabled,
 			},
 		},
 	}
@@ -82,6 +81,6 @@ func (d *userDomain) UpdatePassword(plainPassword string) error {
 	return err
 }
 
-func (d *userDomain) Status() domain.Status {
+func (d *userDomain) Status() Status {
 	return d.value.(*User).Status
 }

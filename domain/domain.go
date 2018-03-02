@@ -5,8 +5,6 @@ import (
 )
 
 type (
-	Status byte
-
 	IAggregateRoot interface {
 		RootId() uint
 	}
@@ -22,11 +20,4 @@ type (
 	Checker interface {
 		Check() validator.ValidationErrors
 	}
-)
-
-const (
-	StatusExcluded Status = iota
-	StatusCanceled
-	StatusDisabled
-	StatusEnabled
 )
