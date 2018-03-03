@@ -3,8 +3,8 @@ package entity
 type TaxonomyTerm struct {
 	entityBase
 	entityBlamed
-	Name         string             `gorm:"type:varchar(50);not null"`
-	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false"`
+	Name         string             `gorm:"type:varchar(50);not null" check:"required"`
+	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false" check:"required"`
 	VocabularyID uint               `gorm:"not null"`
 	Status       Status
 }

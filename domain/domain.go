@@ -1,9 +1,5 @@
 package domain
 
-import (
-	"gopkg.in/go-playground/validator.v8"
-)
-
 type (
 	IAggregateRoot interface {
 		RootId() uint
@@ -18,6 +14,6 @@ type (
 	}
 
 	Checker interface {
-		Check() validator.ValidationErrors
+		Check() error
 	}
 )

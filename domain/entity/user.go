@@ -8,9 +8,9 @@ import (
 
 type User struct {
 	entityBase
-	Username            string `gorm:"type:varchar(150);not null"`
-	Email               string `gorm:"type:varchar(150);not null;unique"`
-	Password            string `gorm:"type:varchar(255);not null"`
+	Username            string `gorm:"type:varchar(150);not null" check:"required"`
+	Email               string `gorm:"type:varchar(150);not null;unique" check:"required,email"`
+	Password            string `gorm:"type:varchar(255);not null" check:"required"`
 	ConfirmationToken   string `gorm:"type:varchar(255);"`
 	PasswordRequestedAt time.Time
 	LastLogin           *time.Time

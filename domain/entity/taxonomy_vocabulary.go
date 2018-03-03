@@ -3,7 +3,7 @@ package entity
 type TaxonomyVocabulary struct {
 	entityBase
 	entityBlamed
-	Name        string `gorm:"type:varchar(50);not null" sql:"index"`
+	Name        string `gorm:"type:varchar(50);not null" sql:"index" check:"required"`
 	Description string `gorm:"type:varchar(1000);not null"`
 	Status      Status
 }
@@ -21,6 +21,8 @@ type taxonomyVocabularyDomain struct {
 }
 
 func NewTaxonomyVocabulary(name string, description string, author *userDomain) *taxonomyVocabularyDomain {
+	u := *author.ToEntity().(*User)
+	u.Password = ""
 	return &taxonomyVocabularyDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyVocabulary{
@@ -30,6 +32,7 @@ func NewTaxonomyVocabulary(name string, description string, author *userDomain) 
 				entityBlamed: entityBlamed{
 					CreatedBy:   *author.ToEntity().(*User),
 					CreatedByID: author.Id(),
+					//ChangedBy: u,
 				},
 			},
 		},

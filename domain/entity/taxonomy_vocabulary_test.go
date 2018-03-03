@@ -6,14 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestTaxonomyVocabularyEmptyInvalid(t *testing.T) {
-	user := NewUser("teste", "email@email.com", "123456")
-	dom := NewTaxonomyVocabulary("teste", "descricao", user)
-
-	assert.NotNil(t, dom)
-}
-
-func TestTaxonomyVocabularyValid(t *testing.T) {
+func TestTaxonomyVocabularyCheckSuccess(t *testing.T) {
 	user := NewUser("teste", "email@email.com", "123456")
 	dom := NewTaxonomyVocabulary("teste", "descricao", user)
 
@@ -26,6 +19,14 @@ func TestTaxonomyVocabularyValid(t *testing.T) {
 
 	assert.IsType(t, dom.Author(), &userDomain{})
 	assert.IsType(t, dom.Editor(), &userDomain{})
+
+	assert.Nil(t, dom.Check())
+}
+
+func TestTaxonomyVocabularyCheckFailure(t *testing.T) {
+	user := NewUser("teste", "email@email.com", "123456")
+
+	assert.NotNil(t, NewTaxonomyVocabulary("", "descricao", user).Check())
 }
 
 func BenchmarkTaxonomyVocabulary(b *testing.B) {
@@ -41,5 +42,6 @@ func BenchmarkTaxonomyVocabulary(b *testing.B) {
 		//Para converter uma entidade para um domínio fica mais rápido fazer o "type assertion" para a entidade. Pq? n sei hsausasau
 		e := dom.ToEntity().(*TaxonomyVocabulary)
 		e.ToDomain()
+		dom.Check()
 	}
 }
