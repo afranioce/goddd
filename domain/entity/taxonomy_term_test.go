@@ -18,6 +18,15 @@ func TestTaxonomyTermValid(t *testing.T) {
 	assert.IsType(t, dom.Vocabulary(), &taxonomyVocabularyDomain{})
 	assert.IsType(t, dom.Author(), &userDomain{})
 	assert.IsType(t, dom.Editor(), &userDomain{})
+
+	assert.Nil(t, dom.Check())
+}
+
+func TestTaxonomyTermCheckFailure(t *testing.T) {
+	user := NewUser("teste", "email@email.com", "123456")
+	vocabDom := NewTaxonomyVocabulary("teste", "descricao", user)
+
+	assert.NotNil(t, NewTaxonomyTerm("", vocabDom, user).Check())
 }
 
 func BenchmarkTaxonomyTerm(b *testing.B) {
@@ -31,6 +40,7 @@ func BenchmarkTaxonomyTerm(b *testing.B) {
 		dom.Vocabulary()
 		dom.Author()
 		dom.Editor()
+		dom.Check()
 		//Para converter uma entidade para um domínio fica mais rápido fazer o "type assertion" para a entidade. Pq? n sei hsausasau
 		e := dom.ToEntity().(*TaxonomyTerm)
 		e.ToDomain()

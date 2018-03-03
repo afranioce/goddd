@@ -21,8 +21,6 @@ type taxonomyVocabularyDomain struct {
 }
 
 func NewTaxonomyVocabulary(name string, description string, author *userDomain) *taxonomyVocabularyDomain {
-	u := *author.ToEntity().(*User)
-	u.Password = ""
 	return &taxonomyVocabularyDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyVocabulary{
@@ -32,7 +30,6 @@ func NewTaxonomyVocabulary(name string, description string, author *userDomain) 
 				entityBlamed: entityBlamed{
 					CreatedBy:   *author.ToEntity().(*User),
 					CreatedByID: author.Id(),
-					//ChangedBy: u,
 				},
 			},
 		},

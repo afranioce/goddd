@@ -4,7 +4,7 @@ type TaxonomyTerm struct {
 	entityBase
 	entityBlamed
 	Name         string             `gorm:"type:varchar(50);not null" check:"required"`
-	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false" check:"required"`
+	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false"`
 	VocabularyID uint               `gorm:"not null"`
 	Status       Status
 }
@@ -25,8 +25,10 @@ func NewTaxonomyTerm(name string, vocabulary *taxonomyVocabularyDomain, author *
 	return &taxonomyTermDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyTerm{
-				Name:   name,
-				Status: StatusEnabled,
+				Name:         name,
+				Status:       StatusEnabled,
+				Vocabulary:   *vocabulary.ToEntity().(*TaxonomyVocabulary),
+				VocabularyID: vocabulary.Id(),
 				entityBlamed: entityBlamed{
 					CreatedBy:   *author.ToEntity().(*User),
 					CreatedByID: author.Id(),

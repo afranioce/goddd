@@ -21,9 +21,9 @@ type entityBase struct {
 }
 
 type entityBlamed struct {
-	CreatedBy   User `gorm:"save_associations:false"`
-	CreatedByID uint `gorm:"not null"`
-	ChangedBy   User `gorm:"save_associations:false" check:"required,structonly"`
+	CreatedBy   User  `gorm:"save_associations:false"`
+	CreatedByID uint  `gorm:"not null"`
+	ChangedBy   *User `gorm:"save_associations:false"`
 	ChangedByID sql.NullInt64
 }
 
