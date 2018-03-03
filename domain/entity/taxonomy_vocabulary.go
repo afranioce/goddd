@@ -8,10 +8,10 @@ type TaxonomyVocabulary struct {
 	Status      Status
 }
 
-func (entidade *TaxonomyVocabulary) ToDomain() EntityTransformer {
+func (e *TaxonomyVocabulary) ToDomain() EntityTransformer {
 	return &taxonomyVocabularyDomain{
 		domainBase: &domainBase{
-			value: entidade,
+			value: e,
 		},
 	}
 }
