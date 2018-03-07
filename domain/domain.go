@@ -1,19 +1,9 @@
 package domain
 
-type (
-	IAggregateRoot interface {
-		RootId() uint
-	}
+type Checker interface {
+	Check() error
+}
 
-	Identifier interface {
-		Id() uint
-	}
-
-	IValueObject interface {
-		Equal(interface{}) bool
-	}
-
-	Checker interface {
-		Check() error
-	}
-)
+type Identifier interface {
+	IsNew() bool
+}

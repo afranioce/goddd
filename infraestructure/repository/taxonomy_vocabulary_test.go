@@ -12,16 +12,14 @@ func TestTaxnomyVocabulary(t *testing.T) {
 	dom := entity.NewTaxonomyVocabulary("Teste", "", author)
 	r := NewTaxnomyVocabulary()
 
-	assert.Equal(t, dom.Id(), 0)
+	assert.Equal(t, dom.ID, 0)
 
 	err := r.Save(dom)
 
-	id := dom.Id()
-
 	assert.NoError(t, err)
-	assert.NotEqual(t, id, 0)
+	assert.NotEqual(t, dom.ID, 0)
 
-	d, _ := r.First(id)
+	d, _ := r.First(dom.ID)
 
-	assert.Equal(t, d.Id(), id)
+	assert.Equal(t, d.ID, dom.ID)
 }

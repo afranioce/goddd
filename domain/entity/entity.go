@@ -5,7 +5,6 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"gopkg.in/go-playground/validator.v8"
-	"github.com/afranioce/goddd/domain"
 )
 
 type Status byte
@@ -21,6 +20,14 @@ type entityBase struct {
 	gorm.Model
 }
 
+func (d *entityBase) Id() uint {
+	return d.ID
+}
+
+func (d *entityBase) IsNew() bool {
+	return d.ID == 0
+}
+
 type entityBlamed struct {
 	CreatedBy   User  `gorm:"save_associations:false"`
 	CreatedByID uint  `gorm:"not null"`
@@ -33,21 +40,4 @@ var validate *validator.Validate
 func init() {
 	config := &validator.Config{TagName: "check"}
 	validate = validator.New(config)
-}
-
-type domainBase struct {
-	value DomainTransformer
-}
-
-func (d *domainBase) Check() error {
-	return validate.Struct(d.value)
-}
-
-type DomainTransformer interface {
-	ToDomain() EntityTransformer
-}
-
-type EntityTransformer interface {
-	domain.Identifier
-	ToEntity() DomainTransformer
 }

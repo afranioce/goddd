@@ -9,59 +9,19 @@ type TaxonomyTerm struct {
 	Status       Status
 }
 
-func (e *TaxonomyTerm) ToDomain() EntityTransformer {
-	return &taxonomyTermDomain{
-		domainBase: &domainBase{
-			value: e,
+func NewTaxonomyTerm(name string, vocabulary *TaxonomyVocabulary, author *User) *TaxonomyTerm {
+	return &TaxonomyTerm{
+		Name:         name,
+		Status:       StatusEnabled,
+		Vocabulary:   *vocabulary,
+		VocabularyID: vocabulary.ID,
+		entityBlamed: entityBlamed{
+			CreatedBy:   *author,
+			CreatedByID: author.ID,
 		},
 	}
 }
 
-type taxonomyTermDomain struct {
-	*domainBase
-}
-
-func NewTaxonomyTerm(name string, vocabulary *TaxonomyVocabularyDomain, author *userDomain) *taxonomyTermDomain {
-	return &taxonomyTermDomain{
-		domainBase: &domainBase{
-			value: &TaxonomyTerm{
-				Name:         name,
-				Status:       StatusEnabled,
-				Vocabulary:   *vocabulary.ToEntity().(*TaxonomyVocabulary),
-				VocabularyID: vocabulary.Id(),
-				entityBlamed: entityBlamed{
-					CreatedBy:   *author.ToEntity().(*User),
-					CreatedByID: author.Id(),
-				},
-			},
-		},
-	}
-}
-
-func (d *taxonomyTermDomain) Id() uint {
-	return d.value.(*TaxonomyTerm).ID
-}
-
-func (d *taxonomyTermDomain) Name() string {
-	return d.value.(*TaxonomyTerm).Name
-}
-
-func (d *taxonomyTermDomain) Vocabulary() EntityTransformer {
-	return d.value.(*TaxonomyTerm).Vocabulary.ToDomain()
-}
-
-func (d *taxonomyTermDomain) Author() EntityTransformer {
-	return d.value.(*TaxonomyTerm).CreatedBy.ToDomain()
-}
-
-func (d *taxonomyTermDomain) Editor() EntityTransformer {
-	return d.value.(*TaxonomyTerm).ChangedBy.ToDomain()
-}
-
-func (d *taxonomyTermDomain) Status() Status {
-	return d.value.(*TaxonomyTerm).Status
-}
-
-func (d *taxonomyTermDomain) ToEntity() DomainTransformer {
-	return &d.value
+func (d *TaxonomyTerm) Check() error {
+	return validate.Struct(d)
 }
