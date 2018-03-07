@@ -3,25 +3,25 @@ package entity
 type TaxonomyVocabulary struct {
 	entityBase
 	entityBlamed
-	Name        string `gorm:"type:varchar(50);not null" sql:"index" check:"required"`
-	Description string `gorm:"type:varchar(1000);not null"`
+	Name        string `gorm:"type:varchar(50);not null" sql:"index" check:"required,max=50"`
+	Description string `gorm:"type:varchar(1000);not null" check:"max=1000"`
 	Status      Status
 }
 
 func (e *TaxonomyVocabulary) ToDomain() EntityTransformer {
-	return &taxonomyVocabularyDomain{
+	return &TaxonomyVocabularyDomain{
 		domainBase: &domainBase{
 			value: e,
 		},
 	}
 }
 
-type taxonomyVocabularyDomain struct {
+type TaxonomyVocabularyDomain struct {
 	*domainBase
 }
 
-func NewTaxonomyVocabulary(name string, description string, author *userDomain) *taxonomyVocabularyDomain {
-	return &taxonomyVocabularyDomain{
+func NewTaxonomyVocabulary(name string, description string, author *userDomain) *TaxonomyVocabularyDomain {
+	return &TaxonomyVocabularyDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyVocabulary{
 				Name:        name,
@@ -36,26 +36,31 @@ func NewTaxonomyVocabulary(name string, description string, author *userDomain) 
 	}
 }
 
-func (d *taxonomyVocabularyDomain) Id() uint {
+func (d *TaxonomyVocabularyDomain) Id() uint {
 	return d.value.(*TaxonomyVocabulary).ID
 }
 
-func (d *taxonomyVocabularyDomain) Name() string {
+func (d *TaxonomyVocabularyDomain) Name() string {
 	return d.value.(*TaxonomyVocabulary).Name
 }
 
-func (d *taxonomyVocabularyDomain) Description() string {
+func (d *TaxonomyVocabularyDomain) Description() string {
 	return d.value.(*TaxonomyVocabulary).Description
 }
 
-func (d *taxonomyVocabularyDomain) Author() EntityTransformer {
+func (d *TaxonomyVocabularyDomain) Author() EntityTransformer {
 	return d.value.(*TaxonomyVocabulary).CreatedBy.ToDomain()
 }
 
-func (d *taxonomyVocabularyDomain) Editor() EntityTransformer {
+func (d *TaxonomyVocabularyDomain) Editor() EntityTransformer {
 	return d.value.(*TaxonomyVocabulary).ChangedBy.ToDomain()
 }
 
-func (d *taxonomyVocabularyDomain) Status() Status {
+func (d *TaxonomyVocabularyDomain) Status() Status {
 	return d.value.(*TaxonomyVocabulary).Status
 }
+
+func (d *TaxonomyVocabularyDomain) ToEntity() DomainTransformer {
+	return &d.value
+}
+

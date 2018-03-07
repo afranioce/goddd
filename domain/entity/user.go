@@ -84,3 +84,7 @@ func (d *userDomain) UpdatePassword(plainPassword string) error {
 func (d *userDomain) Status() Status {
 	return d.value.(*User).Status
 }
+
+func (d *userDomain) ToEntity() xDomainTransformer {
+	return &d.value
+}

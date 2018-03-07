@@ -3,7 +3,7 @@ package entity
 type TaxonomyTerm struct {
 	entityBase
 	entityBlamed
-	Name         string             `gorm:"type:varchar(50);not null" check:"required"`
+	Name         string             `gorm:"type:varchar(50);not null" check:"required,max=50"`
 	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false"`
 	VocabularyID uint               `gorm:"not null"`
 	Status       Status
@@ -21,7 +21,7 @@ type taxonomyTermDomain struct {
 	*domainBase
 }
 
-func NewTaxonomyTerm(name string, vocabulary *taxonomyVocabularyDomain, author *userDomain) *taxonomyTermDomain {
+func NewTaxonomyTerm(name string, vocabulary *TaxonomyVocabularyDomain, author *userDomain) *taxonomyTermDomain {
 	return &taxonomyTermDomain{
 		domainBase: &domainBase{
 			value: &TaxonomyTerm{
@@ -60,4 +60,8 @@ func (d *taxonomyTermDomain) Editor() EntityTransformer {
 
 func (d *taxonomyTermDomain) Status() Status {
 	return d.value.(*TaxonomyTerm).Status
+}
+
+func (d *taxonomyTermDomain) ToEntity() DomainTransformer {
+	return &d.value
 }

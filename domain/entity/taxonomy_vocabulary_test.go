@@ -15,7 +15,7 @@ func TestTaxonomyVocabularyCheckSuccess(t *testing.T) {
 	assert.Equal(t, dom.Description(), "descricao")
 	assert.Equal(t, dom.Status(), StatusEnabled)
 	assert.IsType(t, dom.ToEntity(), &TaxonomyVocabulary{})
-	assert.IsType(t, dom.ToEntity().ToDomain(), &taxonomyVocabularyDomain{})
+	assert.IsType(t, dom.ToEntity().ToDomain(), &TaxonomyVocabularyDomain{})
 
 	assert.IsType(t, dom.Author(), &userDomain{})
 	assert.IsType(t, dom.Editor(), &userDomain{})

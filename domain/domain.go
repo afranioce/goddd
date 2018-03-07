@@ -5,7 +5,7 @@ type (
 		RootId() uint
 	}
 
-	Identitier interface {
+	Identifier interface {
 		Id() uint
 	}
 

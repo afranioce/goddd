@@ -15,7 +15,7 @@ func TestTaxonomyTermValid(t *testing.T) {
 	assert.Equal(t, dom.Name(), "termname")
 	assert.Equal(t, dom.Status(), StatusEnabled)
 
-	assert.IsType(t, dom.Vocabulary(), &taxonomyVocabularyDomain{})
+	assert.IsType(t, dom.Vocabulary(), &TaxonomyVocabularyDomain{})
 	assert.IsType(t, dom.Author(), &userDomain{})
 	assert.IsType(t, dom.Editor(), &userDomain{})
 

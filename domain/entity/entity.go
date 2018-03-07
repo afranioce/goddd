@@ -5,6 +5,7 @@ import (
 
 	"github.com/jinzhu/gorm"
 	"gopkg.in/go-playground/validator.v8"
+	"github.com/afranioce/goddd/domain"
 )
 
 type Status byte
@@ -42,14 +43,11 @@ func (d *domainBase) Check() error {
 	return validate.Struct(d.value)
 }
 
-func (d *domainBase) ToEntity() DomainTransformer {
-	return d.value
-}
-
 type DomainTransformer interface {
 	ToDomain() EntityTransformer
 }
 
 type EntityTransformer interface {
+	domain.Identifier
 	ToEntity() DomainTransformer
 }
