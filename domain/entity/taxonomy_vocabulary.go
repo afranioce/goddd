@@ -1,5 +1,6 @@
 package entity
 
+// TaxonomyVocabulary Vocabulary of taxonomy
 type TaxonomyVocabulary struct {
 	Base
 	Blamed
@@ -8,6 +9,7 @@ type TaxonomyVocabulary struct {
 	Status      Status
 }
 
+// NewTaxonomyVocabulary Constructor
 func NewTaxonomyVocabulary(name string, description string, author *User) *TaxonomyVocabulary {
 	return &TaxonomyVocabulary{
 		Name:        name,
@@ -20,6 +22,7 @@ func NewTaxonomyVocabulary(name string, description string, author *User) *Taxon
 	}
 }
 
+// Check check validation
 func (d *TaxonomyVocabulary) Check() error {
 	return validate.Struct(d)
 }

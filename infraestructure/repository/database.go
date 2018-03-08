@@ -10,6 +10,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 )
 
+// InitDB Initialize connection with database
 func InitDB() *gorm.DB {
 	db, err := gorm.Open(config.MustEnv("DB_DRIVER"), os.ExpandEnv(config.MustEnv("DB_HOST")))
 	if err != nil {
