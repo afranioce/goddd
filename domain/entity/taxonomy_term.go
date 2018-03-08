@@ -1,8 +1,8 @@
 package entity
 
 type TaxonomyTerm struct {
-	entityBase
-	entityBlamed
+	Base
+	Blamed
 	Name         string             `gorm:"type:varchar(50);not null" check:"required,max=50"`
 	Vocabulary   TaxonomyVocabulary `gorm:"save_association:false"`
 	VocabularyID uint               `gorm:"not null"`
@@ -15,7 +15,7 @@ func NewTaxonomyTerm(name string, vocabulary *TaxonomyVocabulary, author *User) 
 		Status:       StatusEnabled,
 		Vocabulary:   *vocabulary,
 		VocabularyID: vocabulary.ID,
-		entityBlamed: entityBlamed{
+		Blamed: Blamed{
 			CreatedBy:   *author,
 			CreatedByID: author.ID,
 		},

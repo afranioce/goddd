@@ -7,7 +7,7 @@ import (
 )
 
 type User struct {
-	entityBase
+	Base
 	Username            string `gorm:"type:varchar(150);not null" check:"required"`
 	Email               string `gorm:"type:varchar(150);not null;unique" check:"required,email"`
 	Password            string `gorm:"type:varchar(255);not null" check:"required"`

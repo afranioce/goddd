@@ -10,16 +10,22 @@ import (
 func TestTaxnomyVocabulary(t *testing.T) {
 	author := entity.NewUser("teste", "email@email.com", "123456")
 	dom := entity.NewTaxonomyVocabulary("Teste", "", author)
-	r := NewTaxnomyVocabulary()
+	r := NewRepository()
 
-	assert.Equal(t, dom.ID, 0)
+	assert.Equal(t, dom.ID, uint(0))
 
 	err := r.Save(dom)
 
 	assert.NoError(t, err)
-	assert.NotEqual(t, dom.ID, 0)
+	assert.NotEqual(t, dom.ID, uint(0))
 
-	d, _ := r.First(dom.ID)
+	d := new(entity.TaxonomyVocabulary)
+	r.First(d, dom.ID)
 
 	assert.Equal(t, d.ID, dom.ID)
+
+	ds := []entity.TaxonomyVocabulary{}
+	r.Find(ds)
+
+	assert.IsType(t, ds, []entity.TaxonomyVocabulary{})
 }

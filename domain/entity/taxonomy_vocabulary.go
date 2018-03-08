@@ -1,8 +1,8 @@
 package entity
 
 type TaxonomyVocabulary struct {
-	entityBase
-	entityBlamed
+	Base
+	Blamed
 	Name        string `gorm:"type:varchar(50);not null" sql:"index" check:"required,max=50"`
 	Description string `gorm:"type:varchar(1000);not null" check:"max=1000"`
 	Status      Status
@@ -13,7 +13,7 @@ func NewTaxonomyVocabulary(name string, description string, author *User) *Taxon
 		Name:        name,
 		Description: description,
 		Status:      StatusEnabled,
-		entityBlamed: entityBlamed{
+		Blamed: Blamed{
 			CreatedBy:   *author,
 			CreatedByID: author.ID,
 		},

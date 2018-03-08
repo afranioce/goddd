@@ -16,19 +16,19 @@ const (
 	StatusEnabled
 )
 
-type entityBase struct {
+type Base struct {
 	gorm.Model
 }
 
-func (d *entityBase) Id() uint {
+func (d *Base) Id() uint {
 	return d.ID
 }
 
-func (d *entityBase) IsNew() bool {
+func (d *Base) IsNew() bool {
 	return d.ID == 0
 }
 
-type entityBlamed struct {
+type Blamed struct {
 	CreatedBy   User  `gorm:"save_associations:false"`
 	CreatedByID uint  `gorm:"not null"`
 	ChangedBy   *User `gorm:"save_associations:false"`
