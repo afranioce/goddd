@@ -15,11 +15,10 @@ func NewRepository() *Repository {
 	}
 }
 
-func (r *Repository) Save(dom domain.Identifier) (err error) {
+func (r *Repository) Save(dom domain.Identifier) error {
 	if dom.IsNew() {
-		err = r.DB.Create(dom).Error
+		return r.DB.Create(dom).Error
 	} else {
-		err = r.DB.Save(dom).Error
+		return r.DB.Save(dom).Error
 	}
-	return
 }

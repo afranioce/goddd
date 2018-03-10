@@ -3,6 +3,7 @@ package application
 import (
 	"fmt"
 
+	"github.com/afranioce/goddd/application/api"
 	"github.com/gin-gonic/gin"
 )
 
@@ -36,6 +37,10 @@ func routerEngine() *gin.Engine {
 	r.OPTIONS("api/v1/*cors", func(c *gin.Context) {
 		// Empty 200 response
 	})
+
+	usr := api.User{}
+	r.POST("/api/v1/user", usr.Create)
+	r.POST("/api/v1/user/change_password", usr.ChangePassword)
 
 	return r
 }

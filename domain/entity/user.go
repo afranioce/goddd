@@ -3,10 +3,14 @@ package entity
 import (
 	"time"
 
+	"github.com/afranioce/goddd/domain/eventsourcing/event"
+
+	"github.com/afranioce/goddd/domain/eventsourcing"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
+	eventsourcing.EventSource
 	Base
 	Username            string `gorm:"type:varchar(150);not null" check:"required"`
 	Email               string `gorm:"type:varchar(150);not null;unique" check:"required,email"`
@@ -18,15 +22,19 @@ type User struct {
 }
 
 func NewUser(username string, email string, plainPassword string) *User {
-	impl := &User{
-		Username: username,
-		Email:    email,
-		Status:   StatusEnabled,
-	}
+	usr := &User{}
 
-	impl.UpdatePassword(plainPassword)
+	eventsourcing.LoadFromEvents(usr, []eventsourcing.Event{
+		event.AccountCreated{
+			Username: username,
+			Email:    email,
+		},
+		event.PasswordChanged{
+			Password: plainPassword,
+		},
+	})
 
-	return impl
+	return usr
 }
 
 func (d *User) UpdateLastLogin() {
@@ -34,17 +42,32 @@ func (d *User) UpdateLastLogin() {
 	d.LastLogin = &now
 }
 
-func (d *User) UpdatePassword(plainPassword string) error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(plainPassword), bcrypt.MinCost)
+func (d *User) ComparePassword(plainPassword string) bool {
+	byteHash := []byte(d.Password)
 
-	if err == nil {
-		d.Password = string(hash)
-		d.PasswordRequestedAt = time.Now()
+	if err := bcrypt.CompareHashAndPassword(byteHash, []byte(plainPassword)); err != nil {
+		return false
 	}
 
-	return err
+	return true
 }
 
 func (d *User) Check() error {
 	return validate.Struct(d)
+}
+
+func (u *User) Transition(evt eventsourcing.Event) {
+	switch e := evt.(type) {
+	case event.AccountCreated:
+		u.Username = e.Username
+		u.Email = e.Email
+		u.Status = StatusEnabled
+		break
+	case event.PasswordChanged:
+		if hash, err := bcrypt.GenerateFromPassword([]byte(e.Password), bcrypt.MinCost); err == nil {
+			u.Password = string(hash)
+			u.PasswordRequestedAt = time.Now()
+		}
+		break
+	}
 }
