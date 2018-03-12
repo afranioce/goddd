@@ -38,7 +38,9 @@ func routerEngine() *gin.Engine {
 		// Empty 200 response
 	})
 
-	usr := api.User{}
+	usr := api.User{
+		Trans: translator,
+	}
 	r.POST("/api/v1/user", usr.Create)
 	r.POST("/api/v1/user/change_password", usr.ChangePassword)
 
